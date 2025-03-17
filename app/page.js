@@ -34,7 +34,7 @@ export default function LoginPage() {
             alt="Knottin Daycare Logo" 
             className="w-20 mx-auto mb-3" 
           />
-          <h2 className="text-3xl font-bold text-g4">Erroneous Gold</h2>
+          <h2 className="text-3xl font-bold text-g2">Erroneous Gold</h2>
           <p className="text-xl text-black">Admin Login</p>
         </div>
 

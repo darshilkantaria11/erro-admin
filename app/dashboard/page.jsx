@@ -30,7 +30,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {/* Add Position to Career Page */}
         <Link href="/products">
-          <div className="flex items-center group bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform min-h-[250px]">
+          <div className="flex items-center group bg-g1 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform min-h-[250px]">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-g2 mb-4 group-hover:text-g4 transition-colors">
                 Single Name Necklace
@@ -38,6 +38,9 @@ export default function Dashboard() {
               <p className="text-gray-600">
                 Manage and add new single name necklace products
               </p>
+              <h2 className="text-6xl text-g2  group-hover:text-g4 transition-colors">
+               +
+              </h2>
             </div>
           </div>
         </Link>
