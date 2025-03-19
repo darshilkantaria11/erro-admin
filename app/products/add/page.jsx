@@ -74,8 +74,7 @@ export default function AddProduct() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-center">Add New Product</h1>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {showSuccess && <p className="text-green-500 text-center mb-4">Product added successfully!</p>}
+       
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
           {Object.keys(formData).map((key) => (
             <div key={key}>
@@ -91,6 +90,8 @@ export default function AddProduct() {
               />
             </div>
           ))}
+           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+           {showSuccess && <p className="text-green-500 text-center mb-4">Product added successfully!</p>}
           <div className="flex gap-4">
             <button
               type="submit"
