@@ -71,8 +71,8 @@ export default function AddProduct() {
   const handleDismissCancel = () => setShowConfirmation(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
-      <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-g3">
+      <div className="w-full max-w-2xl bg-g1 p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-center">Add New Product</h1>
        
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
@@ -88,14 +88,27 @@ export default function AddProduct() {
                 placeholder={`Enter ${key.replace(/([A-Z])/g, " $1").trim()}`}
                 required
               />
+              
+              {/* Show image preview if it's an image URL */}
+              {key.startsWith("img") && formData[key] && (
+                <div className="mt-2">
+                  <img
+                    src={formData[key]}
+                    alt={`Preview ${key}`}
+                    className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
+                  />
+                </div>
+              )}
             </div>
           ))}
-           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-           {showSuccess && <p className="text-green-500 text-center mb-4">Product added successfully!</p>}
+          
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+          {showSuccess && <p className="text-green-500 text-center mb-4">Product added successfully!</p>}
+          
           <div className="flex gap-4">
             <button
               type="submit"
-              className={`w-full py-3 rounded-lg text-white shadow-md transition-transform transform hover:scale-105 ${isSubmitting ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
+              className={`w-full py-3 rounded-lg text-white shadow-md transition-transform transform hover:scale-105 ${isSubmitting ? "bg-gray-400" : "bg-g2 hover:bg-g2"}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Adding..." : "Add Product"}
@@ -103,7 +116,7 @@ export default function AddProduct() {
             <button
               type="button"
               onClick={handleCancel}
-              className="w-full bg-gray-500 text-white py-3 rounded-lg shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105"
+              className="w-full bg-red-600 text-white py-3 rounded-lg shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105"
             >
               Cancel
             </button>

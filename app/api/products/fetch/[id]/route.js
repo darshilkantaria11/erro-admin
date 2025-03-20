@@ -2,8 +2,20 @@ import { dbConnect } from '../../../../utils/mongoose';
 import Product from '../../../../models/product';
 import { NextResponse } from 'next/server';
 
-export async function GET(req, { params }) {
-    const { id } = params;
+export async function GET(req, context) {
+    const { params } = context; // Awaiting params is not needed in App Router
+    const id = params?.id;
+
+    if (!id) {
+        return NextResponse.json({ message: 'Invalid product ID' }, { status: 400 });
+    }
+
+    const authKey = req.headers.get("x-api-key");
+
+    // Secure API Key Verification
+    if (!authKey || authKey !== process.env.NEXT_PUBLIC_API_KEY) { 
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
     try {
         await dbConnect();

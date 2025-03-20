@@ -3,20 +3,31 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetch("/api/products");
+        const response = await fetch("/api/products", {
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API key
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: Unable to fetch products`);
+        }
+
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        console.log("Failed to fetch products:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -28,56 +39,86 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-g3 p-8">
       <div className="max-w-6xl mx-auto">
+        {/* Page Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-g4 tracking-wide">
-            Products
+          <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
+            Our Products
           </h1>
           <button
             onClick={() => router.push("/products/add")}
-            className="bg-g2 text-white px-6 py-3 rounded-lg shadow-xl hover:bg-g4 transition duration-300 transform hover:scale-105"
+            className="bg-g2 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-g2 transition-all transform hover:scale-105"
           >
-            Add Product
+            + Add Product
           </button>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center items-center min-h-[200px]">
-            <div className="w-16 h-16 border-4 border-t-g2 border-gray-300 border-solid rounded-full animate-spin"></div>
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center min-h-[300px]">
+            <div className="w-12 h-12 border-4 border-t-g2 border-gray-300 rounded-full animate-spin"></div>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <Link href={`/products/${product._id}`} key={product._id}>
-                <div className="bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 cursor-pointer h-80 flex flex-col justify-between">
-                  <div>
-                    {/* Product Image */}
-                    {product.img1 && (
-                      <img
-                        src={product.img1}
-                        alt={product.productName}
-                        className="w-full h-40 object-cover rounded-md mb-4"
-                      />
-                    )}
+        )}
 
-                    {/* Product Name */}
-                    <h2 className="text-2xl font-semibold text-g4 mb-2">
-                      {product.productName}
-                    </h2>
-
-                    {/* Product Price */}
-                    <p className="text-lg font-bold text-g2">
-                      ₹{product.originalPrice?.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center mt-4">
-                    <span className="text-sm text-g4">View Details</span>
-                    <span className="text-sm text-g2">→</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+        {/* Error State */}
+        {error && (
+          <div className="text-center text-red-500 font-semibold text-lg">
+            {error}
           </div>
+        )}
+
+        {/* Products Grid */}
+        {!loading && !error && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 bg-g3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {products.length > 0 ? (
+              products.map((product) => (
+                <motion.div
+                  key={product._id}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link href={`/products/${product._id}`}>
+                    <div className="bg-g1 p-5 rounded-xl shadow-md hover:shadow-2xl transition-all cursor-pointer">
+                      {/* Product Image */}
+                      {product.img1 ? (
+                        <img
+                          src={product.img1}
+                          alt={product.productName}
+                          className="w-full h-40 object-cover rounded-md mb-4"
+                        />
+                      ) : (
+                        <div className="w-full h-40 bg-gray-300 flex items-center justify-center rounded-md">
+                          <span className="text-gray-500">No Image</span>
+                        </div>
+                      )}
+
+                      {/* Product Details */}
+                      <h2 className="text-xl font-semibold text-gray-800 truncate">
+                        {product.productName}
+                      </h2>
+                      <p className="text-lg font-bold text-g2 mt-1">
+                        ₹{product.originalPrice?.toLocaleString()}
+                      </p>
+
+                      {/* View Details Button */}
+                      <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
+                        <span>View Details</span>
+                        <span className="text-g2 text-lg">→</span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              <div className="text-center text-gray-500 col-span-full">
+                No products found.
+              </div>
+            )}
+          </motion.div>
         )}
       </div>
     </div>

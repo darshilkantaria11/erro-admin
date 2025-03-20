@@ -15,19 +15,29 @@ export default function ProductDetailPage() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const response = await fetch(`/api/products/fetch/${id}`);
+        const response = await fetch(`/api/products/fetch/${id}`, {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Use environment variable
+          },
+        });
+  
         if (!response.ok) {
           throw new Error("Failed to fetch product");
         }
+  
         const data = await response.json();
         setProduct(data);
       } catch (error) {
         setError(error.message);
       }
     }
-
-    fetchProduct();
+  
+    if (id) {
+      fetchProduct();
+    }
   }, [id]);
+  
 
   // Update product handler
   const handleUpdate = async (event) => {
@@ -37,7 +47,10 @@ export default function ProductDetailPage() {
       const response = await fetch(`/api/products/update/${id}`, {
         method: "PUT",
         body: JSON.stringify(product),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API key authentication
+        },
       });
 
       if (response.ok) {
@@ -46,29 +59,37 @@ export default function ProductDetailPage() {
           router.push("/products");
         }, 2000);
       } else {
-        setError("Failed to update product");
+        const data = await response.json();
+        setError(data.message || "Failed to update product");
       }
     } catch (error) {
       setError(error.message);
     }
   };
+
 
   // Delete product handler
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/products/delete/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is exposed in the frontend
+        },
       });
 
       if (response.ok) {
         router.push("/products");
       } else {
-        setError("Failed to delete product");
+        const data = await response.json();
+        setError(data.message || "Failed to delete product");
       }
     } catch (error) {
       setError(error.message);
     }
   };
+
 
   const handleCancel = () => {
     setShowCancelConfirm(true);
@@ -83,11 +104,11 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-g3 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
+      <div className="w-full max-w-2xl bg-g1 p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-g4 mb-6 text-center">
           Product Details
         </h1>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+       
 
         <form onSubmit={handleUpdate} className="grid grid-cols-1 gap-6">
           <div>
@@ -137,21 +158,33 @@ export default function ProductDetailPage() {
 
           {/* Image Inputs */}
           {["img1", "img2", "img3", "img4"].map((img, index) => (
-            <div key={index}>
-              <label className="block text-base font-medium text-g4 mb-2">
-                Image {index + 1} URL
-              </label>
-              <input
-                type="text"
-                value={product[img]}
-                onChange={(e) =>
-                  setProduct({ ...product, [img]: e.target.value })
-                }
-                className="w-full px-4 py-3 border border-g2 rounded-lg"
-                required
-              />
-            </div>
-          ))}
+  <div key={index} className="mb-6">
+    <label className="block text-base font-medium text-g4 mb-2">
+      Image {index + 1} URL
+    </label>
+    <input
+      type="text"
+      value={product[img] || ""}
+      onChange={(e) =>
+        setProduct({ ...product, [img]: e.target.value })
+      }
+      className="w-full px-4 py-3 border border-g2 rounded-lg"
+      required
+    />
+    
+    {/* Show Image Preview if URL is available */}
+    {product[img] && (
+      <div className="mt-2">
+        <img
+          src={product[img]}
+          alt={`Product Image ${index + 1}`}
+          className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
+        />
+      </div>
+    )}
+  </div>
+))}
+
 
           <div>
             <label className="block text-base font-medium text-g4 mb-2">
@@ -197,7 +230,7 @@ export default function ProductDetailPage() {
               required
             />
           </div>
-
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
           <div className="flex gap-4">
             <button
               type="submit"
@@ -232,7 +265,7 @@ export default function ProductDetailPage() {
               Are you sure you want to delete this product?
             </p>
             <div className="flex justify-center gap-4">
-              <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+              <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-lg">
                 Delete
               </button>
               <button onClick={() => setShowConfirm(false)} className="bg-gray-300 px-4 py-2 rounded-lg">
