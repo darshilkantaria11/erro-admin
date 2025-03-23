@@ -17,7 +17,7 @@ export async function PUT(req, { params }) {
             img4, 
             description, 
             material, 
-            fontname 
+            fontName 
         } = await req.json();
 
         const updatedProduct = await Product.findByIdAndUpdate(id, {
@@ -30,7 +30,7 @@ export async function PUT(req, { params }) {
             img4,
             description,
             material,
-            fontname,
+            fontName,
         }, { new: true });
 
         return NextResponse.json({ message: 'Product updated successfully', product: updatedProduct }, { status: 200 });
