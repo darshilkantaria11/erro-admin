@@ -26,24 +26,22 @@ export default function Dashboard() {
 
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <Link href="/products">
+        <Link href="/orders">
           <div className={cardClasses}>
             <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
-              Add Products
+              View Orders
             </h2>
-            <p className="text-gray-600 mb-4">Manage and add new products</p>
-            <div className="text-6xl text-g2 group-hover:text-g4 transition-colors">+</div>
+            <p className="text-gray-600 mb-4">View orders and put into Crafting</p>
+            
           </div>
         </Link>
-
-        <Link href="/manageorders">
+         <Link href="/orders2">
           <div className={cardClasses}>
             <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
-              Orders
+              Crafting Orders
             </h2>
-            <p className="text-gray-600">
-              Manage the Orders
-            </p>
+            <p className="text-gray-600 mb-4">Orders into crafting</p>
+            
           </div>
         </Link>
       </div>
