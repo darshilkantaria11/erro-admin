@@ -70,6 +70,7 @@ export default function AdminOrdersPage() {
             }
         }
         setProductDetailsMap(detailsMap);
+        return detailsMap;
     };
 
     const handleViewDetails = async (orderId) => {
@@ -84,6 +85,7 @@ export default function AdminOrdersPage() {
         try {
             if (newStatus === "Shipped") {
                 const orderGroup = groupedOrders[orderId];
+                  const freshDetailsMap = await fetchAllProductDetails(orderGroup.items);
                 const payload = {
                     orderId: orderGroup.orderId,
                     name: orderGroup.user.name,
@@ -96,7 +98,7 @@ export default function AdminOrdersPage() {
                     method: orderGroup.items[0].method, // ✅ ADD this
                     items: orderGroup.items.map((item) => ({
                         productId: item.productId,
-                        productName: productDetailsMap[item.productId]?.productName || "Item",
+                         productName: freshDetailsMap[item.productId]?.productName,
                         quantity: item.quantity,
                         amount: item.amount,
                     })),
