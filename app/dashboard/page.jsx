@@ -46,6 +46,16 @@ export default function Dashboard() {
             </p>
           </div>
         </Link>
+         <Link href="/abandonedcart">
+          <div className={cardClasses}>
+            <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
+              Abandoned carts
+            </h2>
+            <p className="text-gray-600">
+              Call the customers for follow up
+            </p>
+          </div>
+        </Link>
       </div>
     </div>
   );
