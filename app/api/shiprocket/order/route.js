@@ -9,8 +9,7 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-   const { orderId, name, number, address, city, state, pincode, amount, items, method } = body;
-
+    const { orderId, name, number, address, city, state, pincode, amount, items, method } = body;
 
     console.log("Incoming order data:", body);
 
@@ -30,8 +29,6 @@ export async function POST(req) {
 
     const paymentMethod = method === "COD" ? "COD" : "Prepaid";
 
-
-    // ✅ Use item.productName, productId, quantity, amount (all provided from frontend)
     const orderPayload = {
       order_id: orderId,
       order_date: new Date().toISOString().split("T")[0],
@@ -46,12 +43,16 @@ export async function POST(req) {
       billing_email: "contact.erroneousgold24@gmail.com",
       billing_phone: number,
       shipping_is_billing: true,
-      order_items: items.map((item) => ({
-        name: item.productName,
-        sku: item.productId,
-        units: item.quantity,
-        selling_price: item.amount,
-      })),
+      order_items: items.map((item) => {
+        const basePrice = item.amount / item.quantity;
+        const sellingPrice = paymentMethod === "Prepaid" ? basePrice - 100 : basePrice;
+        return {
+          name: item.productName,
+          sku: item.productId,
+          units: item.quantity,
+          selling_price: Math.max(sellingPrice, 1), // Avoid negative or zero price
+        };
+      }),
       payment_method: paymentMethod,
       sub_total: amount,
       length: parseInt(process.env.SHIPPING_LENGTH),
