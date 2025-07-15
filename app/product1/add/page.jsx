@@ -70,7 +70,7 @@ export default function AddProduct() {
       if (!response.ok) throw new Error(result.error || "Failed to add product");
 
       setShowSuccess(true);
-      setTimeout(() => router.push("/products"), 2000);
+      setTimeout(() => router.push("/product1"), 2000);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -79,7 +79,7 @@ export default function AddProduct() {
   };
 
   const handleCancel = () => setShowConfirmation(true);
-  const handleConfirmCancel = () => router.push("/products");
+  const handleConfirmCancel = () => router.push("/product1");
   const handleDismissCancel = () => setShowConfirmation(false);
 
   return (

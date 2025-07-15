@@ -26,7 +26,7 @@ export default function Dashboard() {
 
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <Link href="/products">
+        <Link href="/addproducts">
           <div className={cardClasses}>
             <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
               Add Products

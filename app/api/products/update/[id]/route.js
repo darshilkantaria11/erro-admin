@@ -3,7 +3,7 @@ import Product from '../../../../models/product';
 import { NextResponse } from 'next/server';
 
 export async function PUT(req, { params }) {
-    const { id } = params; // No need for await here
+    const { id } = params;
 
     try {
         await dbConnect();
@@ -17,7 +17,9 @@ export async function PUT(req, { params }) {
             img4, 
             description, 
             material, 
-            fontName 
+            fontName,
+            category,  // ✅ Include category from request
+            status
         } = await req.json();
 
         const updatedProduct = await Product.findByIdAndUpdate(id, {
@@ -31,9 +33,14 @@ export async function PUT(req, { params }) {
             description,
             material,
             fontName,
+            category, // ✅ Add to update payload
+            status,
         }, { new: true });
 
-        return NextResponse.json({ message: 'Product updated successfully', product: updatedProduct }, { status: 200 });
+        return NextResponse.json(
+            { message: 'Product updated successfully', product: updatedProduct },
+            { status: 200 }
+        );
     } catch (error) {
         console.error('Error:', error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });
