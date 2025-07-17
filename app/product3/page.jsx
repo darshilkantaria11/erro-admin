@@ -42,13 +42,13 @@ export default function ProductsPage() {
         {/* Page Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
-            All Products
+            Keychains
           </h1>
           <button
-            onClick={() => router.push("/products/add")}
+            onClick={() => router.push("/product3/add")}
             className="bg-g2 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-g2 transition-all transform hover:scale-105"
           >
-            + Add Product
+            + Add Keychains
           </button>
         </div>
 
@@ -75,49 +75,57 @@ export default function ProductsPage() {
             transition={{ duration: 0.5 }}
           >
             {products.length > 0 ? (
-              products.map((product) => (
-                <motion.div
-                  key={product._id}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Link href={`/products/${product._id}`}>
-                    <div className="bg-g1 p-5 rounded-xl shadow-md hover:shadow-2xl transition-all cursor-pointer">
-                      {/* Product Image */}
-                      {product.img1 ? (
-                        <img
-                          src={product.img1}
-                          alt={product.productName}
-                          className="w-full h-40 object-cover rounded-md mb-4"
-                        />
-                      ) : (
-                        <div className="w-full h-40 bg-gray-300 flex items-center justify-center rounded-md">
-                          <span className="text-gray-500">No Image</span>
+              products
+                .filter((product) => product.category === "keychain")
+                .map((product) => {
+                  const bgColor =
+                    product.status === "live" ? "bg-green-200" : "bg-red-200";
+
+                  return (
+                    <motion.div
+                      key={product._id}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Link href={`/product3/${product._id}`}>
+                        <div className={`${bgColor} p-5 rounded-xl shadow-md hover:shadow-2xl transition-all cursor-pointer`}>
+                          {/* Product Image */}
+                          {product.img1 ? (
+                            <img
+                              src={product.img1}
+                              alt={product.productName}
+                              className="w-full h-40 object-cover rounded-md mb-4"
+                            />
+                          ) : (
+                            <div className="w-full h-40 bg-gray-300 flex items-center justify-center rounded-md">
+                              <span className="text-gray-500">No Image</span>
+                            </div>
+                          )}
+
+                          {/* Product Details */}
+                          <h2 className="text-xl font-semibold text-gray-800 truncate">
+                            {product.productName}
+                          </h2>
+                          <p className="text-lg font-bold text-g2 mt-1">
+                            ₹{product.originalPrice?.toLocaleString()}
+                          </p>
+
+                          {/* View Details Button */}
+                          <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
+                            <span>View Details</span>
+                            <span className="text-g2 text-lg">→</span>
+                          </div>
                         </div>
-                      )}
-
-                      {/* Product Details */}
-                      <h2 className="text-xl font-semibold text-gray-800 truncate">
-                        {product.productName}
-                      </h2>
-                      <p className="text-lg font-bold text-g2 mt-1">
-                        ₹{product.originalPrice?.toLocaleString()}
-                      </p>
-
-                      {/* View Details Button */}
-                      <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
-                        <span>View Details</span>
-                        <span className="text-g2 text-lg">→</span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))
+                      </Link>
+                    </motion.div>
+                  );
+                })
             ) : (
               <div className="text-center text-gray-500 col-span-full">
                 No products found.
               </div>
             )}
+
           </motion.div>
         )}
       </div>
