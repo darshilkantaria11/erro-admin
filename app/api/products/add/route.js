@@ -17,7 +17,9 @@ export async function POST(req) {
         await dbConnect();
         const data = await req.json();
 
-        const { 
+        const {
+            category,
+            status, 
             productName, 
             strikeoutPrice, 
             originalPrice, 
@@ -36,6 +38,8 @@ export async function POST(req) {
         }
 
         const newProduct = new Product({
+            category,
+            status,
             productName,
             strikeoutPrice,
             originalPrice,
