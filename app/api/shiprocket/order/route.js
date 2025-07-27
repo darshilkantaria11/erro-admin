@@ -9,7 +9,7 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { orderId, name, number, address, city, state, pincode, amount, items, method } = body;
+    const { orderId, name, number, email, address, city, state, pincode, amount, items, method } = body;
 
     console.log("Incoming order data:", body);
 
@@ -40,7 +40,7 @@ export async function POST(req) {
       billing_state: state,
       billing_pincode: pincode,
       billing_country: "India",
-      billing_email: "contact.erroneousgold24@gmail.com",
+      billing_email: email,
       billing_phone: number,
       shipping_is_billing: true,
       order_items: items.map((item) => {

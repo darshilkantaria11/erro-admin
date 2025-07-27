@@ -41,7 +41,7 @@ export default function AdminOrdersPage() {
                         method: item.method,
                         orderStatus: item.orderStatus,
                         amount: 0,
-                        user: { name: order.name, number: order.number },
+                        user: { name: order.name, number: order.number, email: order.email },
                         items: [],
                     };
                 }
@@ -308,6 +308,7 @@ export default function AdminOrdersPage() {
                                 {groupedOrders[selectedOrderId].items[0].pincode}
                             </p>
                             <p className="text-gray-700">Phone: {groupedOrders[selectedOrderId].user.number}</p>
+                            <p className="text-gray-700">Email: {groupedOrders[selectedOrderId].user.email}</p>
 
                             <div className="mt-4 space-y-1 text-gray-800 font-medium">
                                 <p>Payment Method: {groupedOrders[selectedOrderId].method}</p>
