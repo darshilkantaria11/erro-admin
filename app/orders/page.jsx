@@ -253,16 +253,30 @@ export default function AdminOrdersPage() {
                             Quantity: <strong>{item.quantity}</strong>
                           </p>
                           <p className="text-sm mb-1">
-                            Total: <strong>₹{(item.quantity) * (product.originalPrice.toLocaleString())}</strong>
+                            Total: <strong>₹{(item.quantity * product.originalPrice).toLocaleString()}</strong>
                           </p>
+
                         </>
                       ) : (
                         <p>Loading product info...</p>
                       )}
-                      <p className="text-sm mt-2">
-                        Engraved Name:{" "}
-                        <strong>{item.engravedName || "N/A"}</strong>
-                      </p>
+                      {item.engravedName && (
+                        <p className="text-sm mt-2">
+                          Engraved Name: <strong>{item.engravedName}</strong>
+                        </p>
+                      )}
+
+                      {item.chain && (
+                        <p className="text-sm mt-2 flex items-center gap-2">
+                          Chain:
+                          <img
+                            src={item.chain}
+                            alt="Selected Chain"
+                            className="rounded-md object-cover w-32 h-32"
+                          />
+                        </p>
+                      )}
+
                       <p className="text-xs text-gray-500 mt-1">
                         Product ID: {item.productId}
                       </p>

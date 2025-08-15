@@ -43,7 +43,7 @@ export default function AdminOrdersPage() {
             items: [],
           };
         }
-        grouped[item.orderId].amount += item.amount;
+        grouped[item.orderId].amount = item.amount;
         grouped[item.orderId].items.push({
           ...item,
           user: { name: order.name, number: order.number },
@@ -205,94 +205,132 @@ export default function AdminOrdersPage() {
 
       {/* Order Details Popup */}
       {selectedOrderId && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-            <button
-              onClick={() => setSelectedOrderId(null)}
-              className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold"
-              aria-label="Close details"
-            >
-              &times;
-            </button>
+                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+                        <button
+                            onClick={() => setSelectedOrderId(null)}
+                            className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold"
+                            aria-label="Close details"
+                        >
+                            &times;
+                        </button>
 
-            <h3 className="text-2xl font-semibold mb-6 border-b pb-2">
-              Order Details - #{selectedOrderId}
-            </h3>
+                        <h3 className="text-2xl font-semibold mb-6 border-b pb-2">
+                            Order Details - #{selectedOrderId}
+                        </h3>
 
-            {/* Products List */}
-            <div className="space-y-6">
-              {groupedOrders[selectedOrderId].items.map((item, idx) => {
-                const product = productDetailsMap[item.productId];
-                return (
-                  <div
-                    key={idx}
-                    className="flex flex-col md:flex-row gap-6 border rounded-md p-4 bg-gray-50"
-                  >
-                    <div className="flex-shrink-0">
-                      {product ? (
-                        <img
-                          src={product.img1}
-                          alt={product.productName}
-                          className="rounded-md object-cover w-32 h-32"
-                        />
-                      ) : (
-                        <div className="w-32 h-32 bg-gray-300 animate-pulse rounded-md"></div>
-                      )}
+
+                        {/* Products List */}
+                        <div className="space-y-6">
+                            {groupedOrders[selectedOrderId].items.map((item, idx) => {
+                                const product = productDetailsMap[item.productId];
+                                return (
+                                    <div
+                                        key={idx}
+                                        className="flex flex-col md:flex-row gap-6 border rounded-md p-4 bg-gray-50"
+                                    >
+                                        <div className="flex-shrink-0">
+                                            {product ? (
+                                                <img
+                                                    src={product.img1}
+                                                    alt={product.productName}
+                                                    className="rounded-md object-cover w-32 h-32"
+                                                />
+                                            ) : (
+                                                <div className="w-32 h-32 bg-gray-300 animate-pulse rounded-md"></div>
+                                            )}
+                                        </div>
+                                        <div className="flex-grow">
+                                            {product ? (
+                                                <>
+                                                    <h4 className="text-lg font-semibold mb-1">
+                                                        {product.productName}
+                                                    </h4>
+                                                    <p className="text-sm text-gray-600 mb-1">
+                                                        MRP: ₹{product.originalPrice.toLocaleString()}
+                                                    </p>
+                                                    <p className="text-sm mb-1">
+                                                        Quantity: <strong>{item.quantity}</strong>
+                                                    </p>
+                                                    <p className="text-sm mb-1">
+                                                        Total: <strong>₹{(item.quantity * product.originalPrice).toLocaleString()}</strong>
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p>Loading product info...</p>
+                                            )}
+                                            {item.engravedName && (
+                                                <p className="text-sm mt-2">
+                                                    Engraved Name: <strong>{item.engravedName}</strong>
+                                                </p>
+                                            )}
+
+                                            {item.chain && (
+                                                <p className="text-sm mt-2 flex items-center gap-2">
+                                                    Chain:
+                                                    <img
+                                                        src={item.chain}
+                                                        alt="Selected Chain"
+                                                        className="rounded-md object-cover w-32 h-32"
+                                                    />
+                                                </p>
+                                            )}
+
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                Product ID: {item.productId}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Shipping & Order Info */}
+                        <div className="mt-8 border-t pt-6">
+                            <h4 className="text-xl font-semibold mb-3">Shipping Address</h4>
+                            <p className="text-gray-700">{groupedOrders[selectedOrderId].user.name}</p>
+                            <p className="text-gray-700">{groupedOrders[selectedOrderId].items[0].fullAddress}</p>
+                            <p className="text-gray-700">
+                                {groupedOrders[selectedOrderId].items[0].city},{" "}
+                                {groupedOrders[selectedOrderId].items[0].state} -{" "}
+                                {groupedOrders[selectedOrderId].items[0].pincode}
+                            </p>
+                            <p className="text-gray-700">Phone: {groupedOrders[selectedOrderId].user.number}</p>
+                            <p className="text-gray-700">Email: {groupedOrders[selectedOrderId].user.email}</p>
+
+
+                            <div className="mt-4 space-y-1 text-gray-800 font-medium">
+                                <p>Payment Method: {groupedOrders[selectedOrderId].method}</p>
+                                <p>Status: {groupedOrders[selectedOrderId].orderStatus}</p>
+                                <p>Order ID: {groupedOrders[selectedOrderId].orderId}</p>
+                                {/* <p className="font-bold text-g2 bg-g1">Purchased at: ₹{groupedOrders[selectedOrderId].amount}</p> */}
+                            </div>
+                            {(() => {
+                                let totalMRP = 0;
+                                groupedOrders[selectedOrderId].items.forEach((item) => {
+                                    const product = productDetailsMap[item.productId];
+                                    if (product) {
+                                        totalMRP += item.quantity * product.originalPrice;
+                                    }
+                                });
+
+                                const purchasedAt = groupedOrders[selectedOrderId].amount;
+                                const discount = totalMRP - purchasedAt;
+
+                                return (
+                                    <div className="mt-4 space-y-1 text-gray-800 font-medium">
+                                        <p>Total MRP: ₹{totalMRP.toLocaleString()}</p>
+                                        <p className="text-green-600 font-bold">
+                                            Discount given: ₹{discount > 0 ? discount.toLocaleString() : 0}
+                                        </p>
+                                        <p className="font-bold text-g2 bg-g1">Purchased at: ₹{purchasedAt.toLocaleString()}</p>
+                                    </div>
+                                );
+                            })()}
+                        </div>
                     </div>
-                    <div className="flex-grow">
-                      {product ? (
-                        <>
-                          <h4 className="text-lg font-semibold mb-1">
-                            {product.productName}
-                          </h4>
-                          <p className="text-sm text-gray-600 mb-1">
-                            MRP: ₹{product.originalPrice.toLocaleString()}
-                          </p>
-                          <p className="text-sm mb-1">
-                            Quantity: <strong>{item.quantity}</strong>
-                          </p>
-                          <p className="text-sm mb-1">
-                            Purchased at: <strong>₹{item.amount.toLocaleString()}</strong>
-                          </p>
-                        </>
-                      ) : (
-                        <p>Loading product info...</p>
-                      )}
-                      <p className="text-sm mt-2">
-                        Engraved Name:{" "}
-                        <strong>{item.engravedName || "N/A"}</strong>
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Product ID: {item.productId}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Shipping & Order Info */}
-            <div className="mt-8 border-t pt-6">
-              <h4 className="text-xl font-semibold mb-3">Shipping Address</h4>
-              <p className="text-gray-700">{groupedOrders[selectedOrderId].user.name}</p>
-              <p className="text-gray-700">{groupedOrders[selectedOrderId].items[0].fullAddress}</p>
-              <p className="text-gray-700">
-                {groupedOrders[selectedOrderId].items[0].city},{" "}
-                {groupedOrders[selectedOrderId].items[0].state} -{" "}
-                {groupedOrders[selectedOrderId].items[0].pincode}
-              </p>
-              <p className="text-gray-700">Phone: {groupedOrders[selectedOrderId].user.number}</p>
-              <p className="text-gray-700">Email: {groupedOrders[selectedOrderId].user.email}</p>
-
-              <div className="mt-4 space-y-1 text-gray-800 font-medium">
-                <p>Payment Method: {groupedOrders[selectedOrderId].method}</p>
-                <p>Status: {groupedOrders[selectedOrderId].orderStatus}</p>
-                <p>Order ID: {groupedOrders[selectedOrderId].orderId}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                </div>
+            )}
     </div>
   );
 }

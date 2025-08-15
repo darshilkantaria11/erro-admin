@@ -2,7 +2,6 @@ import { dbConnect } from '../../../utils/mongoose';
 import Product from '../../../models/product';
 import { NextResponse } from 'next/server';
 
-
 export async function POST(req) {
     try {
         // 🔒 Extract API Key from Headers
@@ -29,11 +28,25 @@ export async function POST(req) {
             img4, 
             description, 
             material, 
-            fontName 
+            fontName,
+            chain1,
+            chain2,
+            chain3
         } = data;
 
         // ✅ Validate Required Fields
-        if (!productName || !originalPrice || !img1) {
+        if (
+            !productName ||
+            !strikeoutPrice ||
+            !originalPrice ||
+            !img1 ||
+            !img2 ||
+            !img3 ||
+            !img4 ||
+            !description ||
+            !material ||
+            !fontName
+        ) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
@@ -50,6 +63,9 @@ export async function POST(req) {
             description,
             material,
             fontName,
+            chain1,
+            chain2,
+            chain3
         });
 
         await newProduct.save();

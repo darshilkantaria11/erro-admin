@@ -195,33 +195,37 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Image Inputs */}
-          {["img1", "img2", "img3", "img4"].map((img, index) => (
-            <div key={index} className="mb-6">
-              <label className="block text-base font-medium text-g4 mb-2">
-                Image {index + 1} URL
-              </label>
-              <input
-                type="text"
-                value={product[img] || ""}
-                onChange={(e) =>
-                  setProduct({ ...product, [img]: e.target.value })
-                }
-                className="w-full px-4 py-3 border border-g2 rounded-lg"
-                required
-              />
+           {/* Images */}
+          {["img1", "img2", "img3", "img4", "chain1", "chain2", "chain3"].map(
+            (field, index) => (
+              <div key={field} className="mb-6">
+                <label className="block text-base font-medium text-g4 mb-2">
+                  {field.startsWith("chain")
+                    ? `Chain ${index - 3} Image URL`
+                    : `Image ${index + 1} URL`}
+                </label>
+                <input
+                  type="text"
+                  value={product[field] || ""}
+                  onChange={(e) =>
+                    setProduct({ ...product, [field]: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-g2 rounded-lg"
+                  required
+                />
 
-              {/* Show Image Preview if URL is available */}
-              {product[img] && (
-                <div className="mt-2">
-                  <img
-                    src={product[img]}
-                    alt={`Product Image ${index + 1}`}
-                    className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
-                  />
-                </div>
-              )}
-            </div>
-          ))}
+                {product[field] && (
+                  <div className="mt-2">
+                    <img
+                      src={product[field]}
+                      alt={`Preview ${field}`}
+                      className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          )}
 
 
           <div>

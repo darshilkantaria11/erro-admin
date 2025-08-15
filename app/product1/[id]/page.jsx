@@ -18,7 +18,7 @@ export default function ProductDetailPage() {
         const response = await fetch(`/api/products/fetch/${id}`, {
           method: "GET",
           headers: {
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Use environment variable
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
           },
         });
 
@@ -38,8 +38,6 @@ export default function ProductDetailPage() {
     }
   }, [id]);
 
-
-  // Update product handler
   const handleUpdate = async (event) => {
     event.preventDefault();
 
@@ -49,7 +47,7 @@ export default function ProductDetailPage() {
         body: JSON.stringify(product),
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API key authentication
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
         },
       });
 
@@ -67,15 +65,13 @@ export default function ProductDetailPage() {
     }
   };
 
-
-  // Delete product handler
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/products/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is exposed in the frontend
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
         },
       });
 
@@ -89,7 +85,6 @@ export default function ProductDetailPage() {
       setError(error.message);
     }
   };
-
 
   const handleCancel = () => {
     setShowCancelConfirm(true);
@@ -109,9 +104,8 @@ export default function ProductDetailPage() {
           Product Details
         </h1>
 
-
         <form onSubmit={handleUpdate} className="grid grid-cols-1 gap-6">
-          {/* Category Dropdown */}
+          {/* Category */}
           <div>
             <label className="block text-base font-medium text-g4 mb-2">
               Category
@@ -130,6 +124,8 @@ export default function ProductDetailPage() {
               <option value="rakhi">Rakhi</option>
             </select>
           </div>
+
+          {/* Status */}
           <div>
             <label className="block text-base font-medium text-g4 mb-2">
               Status
@@ -147,8 +143,7 @@ export default function ProductDetailPage() {
             </select>
           </div>
 
-
-
+          {/* Text fields */}
           <div>
             <label className="block text-base font-medium text-g4 mb-2">
               Product Name
@@ -194,35 +189,37 @@ export default function ProductDetailPage() {
             />
           </div>
 
-          {/* Image Inputs */}
-          {["img1", "img2", "img3", "img4"].map((img, index) => (
-            <div key={index} className="mb-6">
-              <label className="block text-base font-medium text-g4 mb-2">
-                Image {index + 1} URL
-              </label>
-              <input
-                type="text"
-                value={product[img] || ""}
-                onChange={(e) =>
-                  setProduct({ ...product, [img]: e.target.value })
-                }
-                className="w-full px-4 py-3 border border-g2 rounded-lg"
-                required
-              />
+          {/* Images */}
+          {["img1", "img2", "img3", "img4", "chain1", "chain2", "chain3"].map(
+            (field, index) => (
+              <div key={field} className="mb-6">
+                <label className="block text-base font-medium text-g4 mb-2">
+                  {field.startsWith("chain")
+                    ? `Chain ${index - 3} Image URL`
+                    : `Image ${index + 1} URL`}
+                </label>
+                <input
+                  type="text"
+                  value={product[field] || ""}
+                  onChange={(e) =>
+                    setProduct({ ...product, [field]: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-g2 rounded-lg"
+                  required
+                />
 
-              {/* Show Image Preview if URL is available */}
-              {product[img] && (
-                <div className="mt-2">
-                  <img
-                    src={product[img]}
-                    alt={`Product Image ${index + 1}`}
-                    className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
-                  />
-                </div>
-              )}
-            </div>
-          ))}
-
+                {product[field] && (
+                  <div className="mt-2">
+                    <img
+                      src={product[field]}
+                      alt={`Preview ${field}`}
+                      className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          )}
 
           <div>
             <label className="block text-base font-medium text-g4 mb-2">
@@ -268,6 +265,7 @@ export default function ProductDetailPage() {
               required
             />
           </div>
+
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
           <div className="flex gap-4">
             <button
@@ -294,7 +292,6 @@ export default function ProductDetailPage() {
         </form>
       </div>
 
-      {/* Confirmation Modals */}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -303,10 +300,16 @@ export default function ProductDetailPage() {
               Are you sure you want to delete this product?
             </p>
             <div className="flex justify-center gap-4">
-              <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-lg">
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg"
+              >
                 Delete
               </button>
-              <button onClick={() => setShowConfirm(false)} className="bg-gray-300 px-4 py-2 rounded-lg">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="bg-gray-300 px-4 py-2 rounded-lg"
+              >
                 Cancel
               </button>
             </div>

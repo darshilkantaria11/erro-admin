@@ -29,6 +29,9 @@ export async function POST(req) {
 
     const paymentMethod = method === "COD" ? "COD" : "Prepaid";
 
+    // 🆕 Calculate total quantity for scaling
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+
     const orderPayload = {
       order_id: orderId,
       order_date: new Date().toISOString().split("T")[0],
@@ -55,10 +58,12 @@ export async function POST(req) {
       }),
       payment_method: paymentMethod,
       sub_total: amount,
-      length: parseInt(process.env.SHIPPING_LENGTH),
-      breadth: parseInt(process.env.SHIPPING_WIDTH),
-      height: parseInt(process.env.SHIPPING_HEIGHT),
-      weight: parseFloat(process.env.SHIPPING_WEIGHT) / 1000,
+
+      // 🆕 Dynamically scale size/weight
+      length: parseInt(process.env.SHIPPING_LENGTH), // unchanged — assuming products are side-by-side
+      breadth: parseInt(process.env.SHIPPING_WIDTH), // unchanged
+      height: parseInt(process.env.SHIPPING_HEIGHT) * totalQuantity, // stack height
+      weight: (parseFloat(process.env.SHIPPING_WEIGHT) * totalQuantity) / 1000, // convert g → kg
     };
 
     console.log("Sending order payload to Shiprocket:", JSON.stringify(orderPayload, null, 2));

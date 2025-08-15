@@ -26,6 +26,9 @@ export default function AddProduct() {
     description: "",
     material: "",
     fontName: "",
+    chain1: "",
+    chain2: "",
+    chain3: "",
   });
 
   const [error, setError] = useState("");
@@ -131,7 +134,7 @@ export default function AddProduct() {
                   placeholder={`Enter ${key.replace(/([A-Z])/g, " $1").trim()}`}
                   required
                 />
-                {key.startsWith("img") && formData[key] && (
+                {(key.startsWith("img") || key.startsWith("chain")) && formData[key] && (
                   <div className="mt-2">
                     <img
                       src={formData[key]}
