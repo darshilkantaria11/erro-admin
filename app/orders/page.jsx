@@ -43,7 +43,7 @@ export default function AdminOrdersPage() {
             items: [],
           };
         }
-        grouped[item.orderId].amount += item.amount;
+        grouped[item.orderId].amount = item.amount;
         grouped[item.orderId].items.push({
           ...item,
           user: { name: order.name, number: order.number },
@@ -105,7 +105,7 @@ export default function AdminOrdersPage() {
     }
   };
 
-  
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10 font-sans">
@@ -113,7 +113,7 @@ export default function AdminOrdersPage() {
         Confirmed Orders Dashboard
       </h1>
 
-      
+
 
       {/* Orders Table */}
       <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
@@ -219,6 +219,7 @@ export default function AdminOrdersPage() {
               Order Details - #{selectedOrderId}
             </h3>
 
+
             {/* Products List */}
             <div className="space-y-6">
               {groupedOrders[selectedOrderId].items.map((item, idx) => {
@@ -252,7 +253,7 @@ export default function AdminOrdersPage() {
                             Quantity: <strong>{item.quantity}</strong>
                           </p>
                           <p className="text-sm mb-1">
-                            Purchased at: <strong>₹{item.amount.toLocaleString()}</strong>
+                            Total: <strong>₹{(item.quantity) * (product.originalPrice.toLocaleString())}</strong>
                           </p>
                         </>
                       ) : (
@@ -283,13 +284,36 @@ export default function AdminOrdersPage() {
               </p>
               <p className="text-gray-700">Phone: {groupedOrders[selectedOrderId].user.number}</p>
               <p className="text-gray-700">Email: {groupedOrders[selectedOrderId].user.email}</p>
-              
+
 
               <div className="mt-4 space-y-1 text-gray-800 font-medium">
                 <p>Payment Method: {groupedOrders[selectedOrderId].method}</p>
                 <p>Status: {groupedOrders[selectedOrderId].orderStatus}</p>
                 <p>Order ID: {groupedOrders[selectedOrderId].orderId}</p>
+                {/* <p className="font-bold text-g2 bg-g1">Purchased at: ₹{groupedOrders[selectedOrderId].amount}</p> */}
               </div>
+              {(() => {
+                let totalMRP = 0;
+                groupedOrders[selectedOrderId].items.forEach((item) => {
+                  const product = productDetailsMap[item.productId];
+                  if (product) {
+                    totalMRP += item.quantity * product.originalPrice;
+                  }
+                });
+
+                const purchasedAt = groupedOrders[selectedOrderId].amount;
+                const discount = totalMRP - purchasedAt;
+
+                return (
+                  <div className="mt-4 space-y-1 text-gray-800 font-medium">
+                    <p>Total MRP: ₹{totalMRP.toLocaleString()}</p>
+                    <p className="text-green-600 font-bold">
+                      Discount given: ₹{discount > 0 ? discount.toLocaleString() : 0}
+                    </p>
+                    <p className="font-bold text-g2 bg-g1">Purchased at: ₹{purchasedAt.toLocaleString()}</p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
