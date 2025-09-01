@@ -62,15 +62,15 @@ export default function Dashboard() {
 
                     </div>
                 </Link>
-                 {/* <Link href="/product4">
+                 <Link href="/product5">
                     <div className={cardClasses}>
                         <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
-                            Rakhi
+                            Car Charam
                         </h2>
-                        <p className="text-gray-600 mb-4">Add and Manage Rakhi</p>
+                        <p className="text-gray-600 mb-4">Add and Manage Car Charam</p>
 
                     </div>
-                </Link> */}
+                </Link>
                 <Link href="/products">
                     <div className={cardClasses}>
                         <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">

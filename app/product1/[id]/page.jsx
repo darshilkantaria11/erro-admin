@@ -122,6 +122,7 @@ export default function ProductDetailPage() {
               <option value="couplenamenecklace">Couple Name Necklace</option>
               <option value="keychain">Keychain</option>
               <option value="rakhi">Rakhi</option>
+              <option value="carcharam">Car Charam</option>
             </select>
           </div>
 

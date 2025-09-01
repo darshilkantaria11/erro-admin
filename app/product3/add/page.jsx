@@ -8,6 +8,7 @@ const CATEGORY_OPTIONS = [
   "couplenamenecklace",
   "keychain",
   "rakhi",
+  "carcharam",
 ];
 const STATUS_OPTIONS = ["live", "inactive"];
 

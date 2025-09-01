@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
       if (response.ok) {
         setShowSuccess(true);
         setTimeout(() => {
-          router.push("/product2");
+          router.push("/product5");
         }, 2000);
       } else {
         const data = await response.json();
@@ -80,7 +80,7 @@ export default function ProductDetailPage() {
       });
 
       if (response.ok) {
-        router.push("/product2");
+        router.push("/product5");
       } else {
         const data = await response.json();
         setError(data.message || "Failed to delete product");
@@ -117,7 +117,7 @@ export default function ProductDetailPage() {
               Category
             </label>
             <select
-              value={product.category || "couplenamenecklace"}
+              value={product.category || "rakhi"}
               onChange={(e) =>
                 setProduct({ ...product, category: e.target.value })
               }
@@ -196,37 +196,33 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Image Inputs */}
-           {/* Images */}
-          {["img1", "img2", "img3", "img4", "chain1", "chain2", "chain3"].map(
-            (field, index) => (
-              <div key={field} className="mb-6">
-                <label className="block text-base font-medium text-g4 mb-2">
-                  {field.startsWith("chain")
-                    ? `Chain ${index - 3} Image URL`
-                    : `Image ${index + 1} URL`}
-                </label>
-                <input
-                  type="text"
-                  value={product[field] || ""}
-                  onChange={(e) =>
-                    setProduct({ ...product, [field]: e.target.value })
-                  }
-                  className="w-full px-4 py-3 border border-g2 rounded-lg"
-                  required
-                />
+          {["img1", "img2", "img3", "img4"].map((img, index) => (
+            <div key={index} className="mb-6">
+              <label className="block text-base font-medium text-g4 mb-2">
+                Image {index + 1} URL
+              </label>
+              <input
+                type="text"
+                value={product[img] || ""}
+                onChange={(e) =>
+                  setProduct({ ...product, [img]: e.target.value })
+                }
+                className="w-full px-4 py-3 border border-g2 rounded-lg"
+                required
+              />
 
-                {product[field] && (
-                  <div className="mt-2">
-                    <img
-                      src={product[field]}
-                      alt={`Preview ${field}`}
-                      className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
-                    />
-                  </div>
-                )}
-              </div>
-            )
-          )}
+              {/* Show Image Preview if URL is available */}
+              {product[img] && (
+                <div className="mt-2">
+                  <img
+                    src={product[img]}
+                    alt={`Product Image ${index + 1}`}
+                    className="w-auto h-60 object-cover rounded-lg border border-gray-300 shadow-md"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
 
 
           <div>

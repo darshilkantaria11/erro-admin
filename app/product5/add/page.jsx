@@ -15,7 +15,7 @@ const STATUS_OPTIONS = ["live", "inactive"];
 
 export default function AddProduct() {
   const [formData, setFormData] = useState({
-    category: "singlenamenecklace", // default
+    category: "carcharam", // default
     status: "live", // default
     productName: "",
     strikeoutPrice: "",
@@ -27,9 +27,6 @@ export default function AddProduct() {
     description: "",
     material: "",
     fontName: "",
-    chain1: "",
-    chain2: "",
-    chain3: "",
   });
 
   const [error, setError] = useState("");
@@ -74,7 +71,7 @@ export default function AddProduct() {
       if (!response.ok) throw new Error(result.error || "Failed to add product");
 
       setShowSuccess(true);
-      setTimeout(() => router.push("/product1"), 2000);
+      setTimeout(() => router.push("/product5"), 2000);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -83,7 +80,7 @@ export default function AddProduct() {
   };
 
   const handleCancel = () => setShowConfirmation(true);
-  const handleConfirmCancel = () => router.push("/product1");
+  const handleConfirmCancel = () => router.push("/product5");
   const handleDismissCancel = () => setShowConfirmation(false);
 
   return (
@@ -93,32 +90,32 @@ export default function AddProduct() {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
           {Object.keys(formData).map((key) => {
-           if (key === "category" || key === "status") {
-  return (
-    <div key={key}>
-      <label className="block font-medium mb-2">
-        {key.charAt(0).toUpperCase() + key.slice(1)}
-      </label>
-      <select
-        name={key}
-        value={formData[key]}
-        onChange={handleChange}
-        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
-        required
-      >
-        {(key === "category" ? CATEGORY_OPTIONS : STATUS_OPTIONS).map(
-          (option) => (
-            <option key={option} value={option}>
-              {option.replace(/([a-z])([A-Z])/g, "$1 $2")}
-            </option>
-          )
-        )}
-      </select>
-    </div>
-  );
-}
-            
-            
+            if (key === "category" || key === "status") {
+              return (
+                <div key={key}>
+                  <label className="block font-medium mb-2">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </label>
+                  <select
+                    name={key}
+                    value={formData[key]}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2"
+                    required
+                  >
+                    {(key === "category" ? CATEGORY_OPTIONS : STATUS_OPTIONS).map(
+                      (option) => (
+                        <option key={option} value={option}>
+                          {option.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+              );
+            }
+
+
 
             return (
               <div key={key}>
@@ -135,7 +132,7 @@ export default function AddProduct() {
                   placeholder={`Enter ${key.replace(/([A-Z])/g, " $1").trim()}`}
                   required
                 />
-                {(key.startsWith("img") || key.startsWith("chain")) && formData[key] && (
+                {key.startsWith("img") && formData[key] && (
                   <div className="mt-2">
                     <img
                       src={formData[key]}
