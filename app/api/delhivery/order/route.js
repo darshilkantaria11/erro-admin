@@ -4,22 +4,22 @@ export async function POST(req) {
   try {
     const payload = await req.json();
 
-   const shipments = [
-  {
-    order: payload.orderId,
-    phone: payload.number,
-    name: payload.name,
-    add: payload.address,
-    city: payload.city,
-    state: payload.state,
-    pin: payload.pincode,
-    cod_amount: payload.method === "COD" ? payload.amount : 0,
-    product: payload.items.map(i => i.productName).join(", "),
-    total_amount: payload.amount,
-    payment_mode: payload.method === "COD" ? "COD" : "Prepaid",  // ✅ REQUIRED
-  },
-];
-
+    const shipments = [
+      {
+        order: payload.orderId,
+        phone: payload.number,
+        name: payload.name,
+        add: payload.address,
+        city: payload.city,
+        state: payload.state,
+        pin: payload.pincode,
+        cod_amount: payload.method === "COD" ? payload.amount : 0,
+        product: payload.items.map(i => i.productName).join(", "),
+        total_amount: payload.amount,
+        payment_mode: payload.method === "COD" ? "COD" : "Prepaid", // ✅ REQUIRED
+        weight: 0.3, // ✅ 300 grams in kilograms
+      },
+    ];
 
     const dataObject = {
       client: process.env.DELHIVERY_CLIENT_NAME,
@@ -63,8 +63,9 @@ export async function POST(req) {
     return new Response(JSON.stringify({ success: true, data: result }), { status: 200 });
   } catch (err) {
     console.error("Error in /api/delhivery/order:", err);
-    return new Response(JSON.stringify({ error: "Internal server error", details: err.message }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: "Internal server error", details: err.message }),
+      { status: 500 }
+    );
   }
 }
