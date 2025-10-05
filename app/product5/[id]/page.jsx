@@ -129,6 +129,9 @@ export default function ProductDetailPage() {
               <option value="keychain">Keychain</option>
               <option value="rakhi">Rakhi</option>
               <option value="carcharam">Car Charam</option>
+               <option value="skeychain">Single Name Keychain</option>
+              <option value="ckeychain">Couple Name Keychain</option>
+              <option value="designerpendents">Designer Pendents</option>
             </select>
           </div>
           <div>

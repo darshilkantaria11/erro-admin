@@ -9,6 +9,9 @@ const CATEGORY_OPTIONS = [
   "keychain",
   "rakhi",
   "carcharam",
+  "skeychain",
+  "ckeychain",
+  "designerpendents",
 ];
 const STATUS_OPTIONS = ["live", "inactive"];
 

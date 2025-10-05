@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
       if (response.ok) {
         setShowSuccess(true);
         setTimeout(() => {
-          router.push("/product3");
+          router.push("/product6");
         }, 2000);
       } else {
         const data = await response.json();
@@ -80,7 +80,7 @@ export default function ProductDetailPage() {
       });
 
       if (response.ok) {
-        router.push("/product3");
+        router.push("/product6");
       } else {
         const data = await response.json();
         setError(data.message || "Failed to delete product");
@@ -117,7 +117,7 @@ export default function ProductDetailPage() {
               Category
             </label>
             <select
-              value={product.category || "keychain"}
+              value={product.category || "skeychain"}
               onChange={(e) =>
                 setProduct({ ...product, category: e.target.value })
               }

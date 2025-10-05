@@ -53,6 +53,24 @@ export default function Dashboard() {
 
                     </div>
                 </Link>
+                <Link href="/product6">
+                    <div className={cardClasses}>
+                        <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
+                            Single Name Keychains
+                        </h2>
+                        <p className="text-gray-600 mb-4">Add and Manage Single Name Keychains</p>
+
+                    </div>
+                </Link>
+                <Link href="/product7">
+                    <div className={cardClasses}>
+                        <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
+                           Couple Name Keychains
+                        </h2>
+                        <p className="text-gray-600 mb-4">Add and Manage Couple Name Keychains</p>
+
+                    </div>
+                </Link>
                 <Link href="/product4">
                     <div className={cardClasses}>
                         <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
@@ -68,6 +86,15 @@ export default function Dashboard() {
                             Car Charam
                         </h2>
                         <p className="text-gray-600 mb-4">Add and Manage Car Charam</p>
+
+                    </div>
+                </Link>
+                  <Link href="/product8">
+                    <div className={cardClasses}>
+                        <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
+                            Designer Pendents
+                        </h2>
+                        <p className="text-gray-600 mb-4">Add and Manage Designer Pendents</p>
 
                     </div>
                 </Link>
