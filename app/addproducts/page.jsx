@@ -107,6 +107,15 @@ export default function Dashboard() {
 
                     </div>
                 </Link>
+                 <Link href="/chainupdate">
+                    <div className="flex flex-col justify-center items-center text-center group bg-green-200 p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300 hover:scale-105 min-h-[250px]">
+                        <h2 className="text-3xl font-bold text-g2 mb-2 group-hover:text-g4 transition-colors">
+                            Chain Update
+                        </h2>
+                        <p className="text-gray-600 mb-4">update all chains for single and couple name neckalce</p>
+
+                    </div>
+                </Link>
             </div>
         </div>
     );
